@@ -36,7 +36,7 @@ class Order(db.Model):
 
 class GetCustomers(webapp2.RequestHandler):
     def get(self):
-        customers = Customer.all().fetch(1000)# db.GqlQuery("SELECT * FROM Customer").run()
+        customers = db.GqlQuery("SELECT * FROM Customer")
         prepJson = []
         for customer in customers:
             tempCustomer = dict()
@@ -55,7 +55,7 @@ class GetCustomers(webapp2.RequestHandler):
 
 class GetProducts(webapp2.RequestHandler):
     def get(self):
-        products = Product.all().fetch(1000)# db.GqlQuery("SELECT * FROM Customer").run()
+        products = db.GqlQuery("SELECT * FROM Product")
         prepJson = []
         for product in products:
             temp_product = dict()
