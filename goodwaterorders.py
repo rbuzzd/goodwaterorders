@@ -68,7 +68,6 @@ class GetProducts(webapp2.RequestHandler):
         self.response.write(json.dumps(prepJson))
 
 
-
 class MainPage(webapp2.RequestHandler):
     def get(self):
         jinja_environment = jinja2.Environment(autoescape=True,
