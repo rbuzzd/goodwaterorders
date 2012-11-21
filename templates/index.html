@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/css/jquery.mobile-1.1.1.min.css" />
+
+    <script data-main="../js/app/config" src="../js/libs/require.js"></script>
+
+    <!--script id="productTemplate" type="text/template">
+        <div>
+            <h1><%= title %></h1>
+        </div>
+        <div>
+            <%= price %>
+        </div>
+    </script-->
+
+</head>
+<body>
+
+    <div id="container">
+    </div>
+
+    <div data-role="page">
+        <div data-role="header"><h1>Главная</h1></div>
+        <div data-role="content">
+
+            <a href="#orders" data-role="button" data-icon="check">Заказы</a>
+            <a href="#customers" data-role="button" data-icon="info">Клиенты</a>
+            <a href="#products" data-role="button" data-icon="star">Продукты</a>
+            <!--a href="/" data-role="button" data-icon="home">Главная</a-->
+        </div>
+        <div data-role="footer" class="ui-bar">
+            <h1>Добрая вода 2012</h1>
+        </div>
+    </div>
+
+    <div data-role="page" id="products" data-add-back-btn="true">
+        <div data-role="header">
+            <h1>Продукты</h1>
+        </div><!-- /header -->
+
+        <div data-role="content">
+            <a href="#editProduct" data-role="button" data-icon="plus">Новый продукт</a>
+            <a id="showProductsButton" onclick="ShowProducts();" data-role="button" data-icon="grid">Все продукты</a>
+            <ul id="productsList" data-role='listview'>
+
+            </ul>
+        </div><!-- /content -->
+
+        <div data-role="footer" class="ui-bar">
+            <a data-icon="home" href="/">Вернуться на главную страницу</a>
+        </div><!-- /footer -->
+
+    </div>
+
+    <div data-role="page" id="editProduct" data-add-back-btn="true">
+
+        <div data-role="header">
+            <h1>Данные продукта</h1>    
+        </div><!-- /header -->
+
+        <div data-role="content">
+            <form name="ProductForm" id="ProductForm" action="/editProduct" method="get" style="margin-left:auto;margin-right:auto;">
+                <div data-role="fieldcontain">
+                    <label for="productName">Наименование*</label>
+                    <input type="text" name="Name" id="productName" value="" data-mini="true" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="productPrice">Цена*</label>
+                    <input type="text" name="Price" id="productPrice" value="" data-mini="true" />
+                </div>
+                <div data-role="productComment">
+                    <label for="productComment">Примечание</label>
+                    <textarea name="Comment" id="productComment"></textarea>
+                </div>
+                <button onclick="SaveProduct($('#ProductForm'));return false;">Сохранить</button>
+            </form>
+        </div><!-- /content -->
+
+        <div data-role="footer" class="ui-bar">
+            <a href="/">Вернуться на главную страницу</a>
+        </div><!-- /footer -->
+    </div><!-- /page -->
+
+    <div data-role="page" id="addProductOK">
+        <div data-role="header"><h1>Продукт сохранен</h1></div>
+        <div data-role="content">
+            <a onclick="OpenNewProductPage();" data-role="button" data-icon="plus">Добавить продукт</a>
+            <a onclick="$.mobile.changePage($('#products'));" data-role="button" data-icon="info">Все продукты</a>
+            <a href="/" data-role="button" data-icon="home">Вернуться на главную страницу</a>
+        </div>
+        <div data-role="footer" class="ui-bar">
+            <h1>Добрая вода</h1>
+        </div>
+    </div>
+
+
+    <div data-role="page" id="customers" data-add-back-btn="true">
+
+        <div data-role="header">
+            <h1>Клиенты</h1>
+        </div><!-- /header -->
+
+        <div data-role="content">
+            <a onclick="OpenNewCustomerPage();" data-role="button" data-icon="plus">Новый клиент</a>
+            <a data-role="button" data-icon="grid" onclick="ShowCustomers();">Все клиенты</a>
+            <ul id="customersList" data-role='listview'>
+
+            </ul>
+        </div><!-- /content -->
+
+
+        <div data-role="footer" class="ui-bar">
+            <a href="/">Вернуться на главную страницу</a>
+        </div><!-- /footer -->
+    </div><!-- /page -->
+
+    <div data-role="page" id="editCustomer" data-add-back-btn="true">
+
+        <div data-role="header">
+            <h1>Данные клиента</h1>
+        </div><!-- /header -->
+
+        <div data-role="content">
+            <form name="CustomerForm" id="CustomerForm" action="/editCustomer" method="get" style="margin-left:auto;margin-right:auto;">
+                <div data-role="fieldcontain">
+                    <label for="customerName">ФИО*</label>
+                    <input type="text" name="Name" id="customerName" value="" data-mini="true" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="customerPhone">Телефон*</label>
+                    <input type="text" name="phone" id="customerPhone" value="" data-mini="true" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="customerStreet">Улица*</label>
+                    <input type="text" name="street" id="customerStreet" value="" data-mini="true"/>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="customerHouseNumber">Номер дома*</label>
+                    <input type="text" name="houseNumber" id="customerHouseNumber" value="" data-mini="true"/>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="customerFlatNumber">Номер квартиры</label>
+                    <input type="text" name="flatNumber" id="customerFlatNumber" value="" data-mini="true"/>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="customerBalance">Баланс</label>
+                    <input type="text" name="balance" id="customerBalance" value="" data-mini="true"/>
+                </div>
+                <div data-role="customerComment">
+                    <label for="customerComment">Примечание</label>
+                    <textarea name="customerComment" id="customerComment" ></textarea>
+                </div>
+                <button onclick="SaveCustomer($('#CustomerForm'));return false;">Сохранить</button>
+            </form>
+        </div><!-- /content -->
+
+        <div data-role="footer" class="ui-bar">
+            <a href="/">Вернуться на главную страницу</a>
+        </div><!-- /footer -->
+    </div><!-- /page -->
+
+    <div data-role="page" id="addCustomerOK">
+        <div data-role="header"><h1>Клиент сохранен</h1></div>
+        <div data-role="content">
+            <a onclick="OpenNewCustomerPage();" data-role="button" data-icon="plus">Добавить клиента</a>
+            <a href="#customers" data-role="button" data-icon="info">Все клиенты</a>
+            <a href="/" data-role="button" data-icon="home">Вернуться на главную страницу</a>
+        </div>
+        <div data-role="footer" class="ui-bar">
+            <h1>Добрая вода</h1>
+        </div>
+    </div>
+
+    <div data-role="page" id="addOrderOK">
+        <div data-role="header"><h1>Заказ сохранен</h1></div>
+        <div data-role="content">
+            <a onclick="OpenNewOrderPage();" data-role="button" data-icon="plus">Добавить заказ</a>
+            <a href="#orders" data-role="button" data-icon="info">Все заказы</a>
+            <a href="/" data-role="button" data-icon="home">Вернуться на главную страницу</a>
+        </div>
+        <div data-role="footer" class="ui-bar">
+            <h1>Добрая вода</h1>
+        </div>
+    </div>
+
+
+    <div data-role="page" id="orders" data-add-back-btn="true">
+
+        <div data-role="header">
+            <h1>Заказы</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+            <a href="#editOrder" data-role="button" data-icon="plus">Новый заказ</a>
+            <a data-role="button" data-icon="grid" onclick="UpdateOrdersList($('#ordersList'))">Открытые заказы</a>
+            <ul id="ordersList" data-role='listview'>
+
+            </ul>
+
+        </div><!-- /content -->
+        <div data-role="footer" class="ui-bar">
+            <h1>{{ footerText }}</h1>
+        </div><!-- /footer -->
+    </div>
+
+    <div data-role="page" id="editOrder" data-add-back-btn="true">
+        <div data-role="header">
+            <h1>Заказ</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+
+            <form name="EditOrderForm" id="EditOrderForm" action="/EditOrder" method="get" style="margin-left:auto;margin-right:auto;">
+                <div data-role="fieldcontain">
+                    <label for="orderCustomer">Клиент</label>
+                    <select name="orderCustomer" id="orderCustomer" data-mini="true" ></select>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="orderTime" >Время</label>
+                    <input type="text" name="orderTime" id="orderTime" value="" data-mini="true" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="orderProduct">Товар</label>
+                    <select name="orderProduct" id="orderProduct" data-mini="true" ></select>
+                </div>
+                <div data-role="fieldcontain">
+            <!--label for="orderAmount">Количество</label>
+            <input type="text"  name="orderAmount" id="orderAmount" value="1" data-mini="true"/-->
+            <label for="orderAmount">Количество</label>
+            <input type="range" name="orderAmount" id="orderAmount" value="1" min="1" max="20" />
+        </div>
+        <div data-role="fieldcontain">
+            <label for="orderIsPaid">Уже оплачено</label>
+            <select name="orderIsPaid" id="orderIsPaid" data-role="slider">
+                <option value="false">Нет</option>
+                <option value="true">Да</option>
+            </select>
+            <!--label for="orderNeedToPay">Требовать оплату</label>
+            <input type="checkbox"  name="orderNeedToPay" id="orderNeedToPay" value="" data-mini="true"/-->
+        </div>
+        <div data-role="fieldcontain">
+            <label for="orderComment">Примечание</label>
+            <textarea name="orderComment" id="orderComment"></textarea>
+        </div>
+        <button onclick="SaveOrder($('#EditOrderForm'));return false;">Сохранить</button>
+    </form>
+
+</div><!-- /content -->
+
+<div data-role="footer" class="ui-bar">
+   <a href="/" data-role="button">Вернуться на главную страницу</a>
+</div><!-- /footer -->
+</div>
+
+
+</body>
+</html>
